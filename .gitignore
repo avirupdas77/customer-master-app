@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+
+# Environment & local settings
+.env
+backend/.env
+
+# Production build output
+frontend/build/
+dist/
+
+# Logs & OS generated files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+Thumbs.db
