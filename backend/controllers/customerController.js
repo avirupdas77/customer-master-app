@@ -24,15 +24,17 @@ const validateCustomerData = (body) => {
 
     if (Email && Email.trim() !== '') {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(Email)) {
+        if (!emailRegex.test(Email.trim())) {
             errors.push('Invalid Email format.');
         }
     }
 
+    // Mobile Number validation: accepts 10 digits or country code format (+91 9876543210)
     if (MobileNo && MobileNo.trim() !== '') {
-        const mobileRegex = /^[0-9]{10}$/;
-        if (!mobileRegex.test(MobileNo)) {
-            errors.push('Mobile Number must be exactly 10 digits.');
+        // Extract digits only
+        const digitsOnly = MobileNo.replace(/\D/g, '');
+        if (digitsOnly.length < 10 || digitsOnly.length > 13) {
+            errors.push('Mobile Number must contain a valid 10-digit phone number.');
         }
     }
 
@@ -97,7 +99,7 @@ exports.createCustomer = async (req, res) => {
         if (validationErrors.length > 0) {
             return res.status(400).json({
                 success: false,
-                message: 'Validation failed.',
+                message: validationErrors.join(' '),
                 errors: validationErrors
             });
         }
@@ -146,7 +148,7 @@ exports.updateCustomer = async (req, res) => {
         if (validationErrors.length > 0) {
             return res.status(400).json({
                 success: false,
-                message: 'Validation failed.',
+                message: validationErrors.join(' '),
                 errors: validationErrors
             });
         }
